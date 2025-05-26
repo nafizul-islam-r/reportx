@@ -61,7 +61,7 @@ public class ReportService {
                 System.out.println("Info: " + rs.getString("scammer_info"));
                 System.out.println("Description: " + rs.getString("description"));
                 System.out.println("Status: " + rs.getString("status"));
-                System.out.println("Created At: " + rs.getTimestamp("created_at\n"));
+                System.out.println("Created At: " + rs.getTimestamp("created_at"));
             }
 
             if (!found) {
