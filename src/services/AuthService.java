@@ -1,6 +1,7 @@
 package services;
 
 import db.DBConnection;
+import utils.PasswordUtil;
 import models.User;
 
 import java.sql.*;
@@ -16,10 +17,11 @@ public class AuthService {
         String password = scanner.nextLine();
 
         try (Connection conn = DBConnection.getConnection()) {
+            String hashedPassword = PasswordUtil.hashPassword(password);
             String sql = "SELECT * FROM users WHERE username = ? AND password = ?";
             PreparedStatement stmt = conn.prepareStatement(sql);
             stmt.setString(1, username);
-            stmt.setString(2, password);
+            stmt.setString(2, hashedPassword);
             ResultSet rs = stmt.executeQuery();
 
             if (rs.next()) {
@@ -46,6 +48,7 @@ public class AuthService {
         String password = scanner.nextLine();
 
         try (Connection conn = DBConnection.getConnection()) {
+            String hashedPassword = PasswordUtil.hashPassword(password);
             String checkSql = "SELECT * FROM users WHERE username = ?";
             PreparedStatement checkStmt = conn.prepareStatement(checkSql);
             checkStmt.setString(1, username);
@@ -58,7 +61,7 @@ public class AuthService {
             String sql = "INSERT INTO users (username, password, role) VALUES (?, ?, 'user')";
             PreparedStatement stmt = conn.prepareStatement(sql);
             stmt.setString(1, username);
-            stmt.setString(2, password);
+            stmt.setString(2, hashedPassword);
             stmt.executeUpdate();
             System.out.println("✅ Registered successfully. You can now log in.\n");
         } catch (Exception e) {
